@@ -56,6 +56,7 @@ public class Test extends LinearOpMode {
 
     public void claw()
     {
+
         double servoUp = gamepad1.right_trigger;
         double servoDown = gamepad1.left_trigger;
         if(servoUp != 0) clawPosition = openClaw;
