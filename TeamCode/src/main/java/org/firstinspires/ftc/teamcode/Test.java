@@ -3,8 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import org.opencv.core.Mat;
+//import org.opencv.core.Mat;
 
 @TeleOp
 public class Test extends LinearOpMode {
@@ -12,10 +13,18 @@ public class Test extends LinearOpMode {
     private DcMotor DcMotor2;
     private DcMotor DcMotor3;
     private DcMotor handUp;
+    private Servo clawClamping;
     double motorPower1;
     double motorPower2;
     double motorPower3;
     double power;
+    double clawPosition = 0;
+    double openClaw;
+    double closeClaw;
+    double Liftclaw;
+    double upClaw;
+    double downClaw;
+
 
     public void DcMotorPower()
     {
@@ -38,20 +47,27 @@ public class Test extends LinearOpMode {
 
     public void take(){
         boolean x = gamepad1.right_bumper;
-        double y=0;
-        if (x == true){
-            y=1;
-        }
+        double y = x ? 1 : 0;
         handUp.setPower(y);
         boolean x1 = gamepad1.left_bumper;
-        double y1 = 0;
-        if (x1 == true){
-            y1 = -1;
-        }
-        if (y1 != 0.0){
-            handUp.setPower(y1);
-        }
+        double y1 = x1 ? -1 : 0;
+        if (y1 != 0.0) handUp.setPower(y1);
     }
+
+    public void claw()
+    {
+        double servoUp = gamepad1.right_trigger;
+        double servoDown = gamepad1.left_trigger;
+        if(servoUp != 0) clawPosition = openClaw;
+        if(servoDown != 0) clawPosition = closeClaw;
+    }
+
+    public void clawLift()
+    {
+        if(gamepad1.dpad_up) Liftclaw = 0;
+        if(gamepad1.dpad_down) Liftclaw = 0.67;
+    }
+
 
 
     @Override
@@ -60,6 +76,7 @@ public class Test extends LinearOpMode {
         DcMotor2 = hardwareMap.get(DcMotor.class, "DcMotor2");
         DcMotor3 = hardwareMap.get(DcMotor.class, "DcMotor3");
         handUp = hardwareMap.get(DcMotor.class, "handUp");
+        clawClamping = hardwareMap.get(Servo.class, "clawClamping");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
@@ -73,6 +90,8 @@ public class Test extends LinearOpMode {
             DcMotorPower();
             motorTurn();
             take();
+            claw();
+            clawLift();
         }
     }
 }
