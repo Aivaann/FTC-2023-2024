@@ -19,11 +19,9 @@ public class Test extends LinearOpMode {
     double motorPower3;
     double power;
     double clawPosition = 0;
-    double openClaw;
-    double closeClaw;
+    double openClaw = 0;
+    double closeClaw = 0.22;
     double Liftclaw;
-    double upClaw;
-    double downClaw;
 
 
     public void DcMotorPower()
@@ -58,14 +56,10 @@ public class Test extends LinearOpMode {
     {
         double servoUp = gamepad1.right_trigger;
         double servoDown = gamepad1.left_trigger;
-        if(servoUp != 0) clawPosition = openClaw;
-        if(servoDown != 0) clawPosition = closeClaw;
-    }
-
-    public void clawLift()
-    {
-        if(gamepad1.dpad_up) Liftclaw = 0;
-        if(gamepad1.dpad_down) Liftclaw = 0.67;
+        if(servoUp != 0) clawClamping.setPosition(openClaw);
+        else if(servoDown != 0) clawClamping.setPosition(closeClaw);
+        
+        
     }
 
 
@@ -91,7 +85,6 @@ public class Test extends LinearOpMode {
             motorTurn();
             take();
             claw();
-            clawLift();
         }
     }
 }
