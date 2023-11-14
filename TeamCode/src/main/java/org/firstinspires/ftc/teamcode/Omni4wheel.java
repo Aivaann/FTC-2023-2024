@@ -24,12 +24,12 @@ public class main1 extends LinearOpMode
         double leftBackPower;
         double rightBackPower;
         yaw *= 10;
-        if ((lateral <= 0.1 && lateral > 0)  (lateral >= -0.1 && lateral < 0)){
+        if ((lateral <= 0.1 && lateral > 0) || (lateral >= -0.1 && lateral < 0)){
             rightFrontPower  = -Math.sin(45) * axial - yaw;
             leftFrontPower = Math.sin(45) * axial - yaw;
             leftBackPower   = -Math.sin(45) * axial - yaw;
             rightBackPower  = Math.sin(45) * axial - yaw;
-        }else if ((axial <= 0.1 && axial > 0)  (axial >= -0.1 && axial < 0)){
+        }else if ((axial <= 0.1 && axial > 0) || (axial >= -0.1 && axial < 0)){
             rightFrontPower  = - Math.sin(45) * lateral - yaw;
             leftFrontPower = Math.sin(45) * lateral - yaw;
             leftBackPower   = Math.sin(45) * lateral - yaw;
