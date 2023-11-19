@@ -3,10 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+//import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
-public class main1 extends LinearOpMode
+public class Omni4wheel extends LinearOpMode
 {
 
     // задаём моторы, название мотров в коде, изначально они не объявлены
@@ -16,19 +16,19 @@ public class main1 extends LinearOpMode
 
     public void motors_setPower()
     { // публичная функция не возвращаяет значения - void
-        double axial   = -gamepad1.right_stick_y;
+        double axial = -gamepad1.right_stick_y;
         double lateral =  gamepad1.right_stick_x;
-        double yaw     =  gamepad1.left_stick_x;
+        double yaw = gamepad1.left_stick_x;
         double rightFrontPower;
         double leftFrontPower;
         double leftBackPower;
         double rightBackPower;
         yaw *= 10;
         if ((lateral <= 0.1 && lateral > 0) || (lateral >= -0.1 && lateral < 0)){
-            rightFrontPower  = -Math.sin(45) * axial - yaw;
+            rightFrontPower = -Math.sin(45) * axial - yaw;
             leftFrontPower = Math.sin(45) * axial - yaw;
-            leftBackPower   = -Math.sin(45) * axial - yaw;
-            rightBackPower  = Math.sin(45) * axial - yaw;
+            leftBackPower  = -Math.sin(45) * axial - yaw;
+            rightBackPower = Math.sin(45) * axial - yaw;
         }else if ((axial <= 0.1 && axial > 0) || (axial >= -0.1 && axial < 0)){
             rightFrontPower  = - Math.sin(45) * lateral - yaw;
             leftFrontPower = Math.sin(45) * lateral - yaw;
