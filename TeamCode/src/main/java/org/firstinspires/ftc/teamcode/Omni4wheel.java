@@ -24,21 +24,24 @@ public class Omni4wheel extends LinearOpMode
         double leftBackPower;
         double rightBackPower;
         yaw *= 10;
+
         if ((lateral <= 0.1 && lateral > 0) || (lateral >= -0.1 && lateral < 0)){
-            rightFrontPower = -Math.sin(45) * axial - yaw;
-            leftFrontPower = Math.sin(45) * axial - yaw;
-            leftBackPower  = -Math.sin(45) * axial - yaw;
-            rightBackPower = Math.sin(45) * axial - yaw;
-        }else if ((axial <= 0.1 && axial > 0) || (axial >= -0.1 && axial < 0)){
-            rightFrontPower  = - Math.sin(45) * lateral - yaw;
-            leftFrontPower = Math.sin(45) * lateral - yaw;
-            leftBackPower   = Math.sin(45) * lateral - yaw;
-            rightBackPower  = - Math.sin(45) * lateral - yaw;
-        }else{
-            rightFrontPower  = -Math.sin(45) * axial - Math.sin(45) * lateral - yaw;
-            leftFrontPower = Math.sin(45) * axial + Math.sin(45) * lateral - yaw;
-            leftBackPower   = -Math.sin(45) * axial + Math.sin(45) * lateral - yaw;
-            rightBackPower  = Math.sin(45) * axial - Math.sin(45) * lateral - yaw;
+            rightFrontPower = -Math.sqrt(45) * axial - yaw;
+            leftFrontPower = Math.sqrt(45) * axial - yaw;
+            leftBackPower = -Math.sqrt(45) * axial - yaw;
+            rightBackPower = Math.sqrt(45) * axial - yaw;
+        }
+        else if ((axial <= 0.1 && axial > 0) || (axial >= -0.1 && axial < 0)){
+            rightFrontPower = -Math.sqrt(45) * lateral - yaw;
+            leftFrontPower = Math.sqrt(45) * lateral - yaw;
+            leftBackPower = Math.sqrt(45) * lateral - yaw;
+            rightBackPower = -Math.sqrt(45) * lateral - yaw;
+        }
+        else{
+            rightFrontPower = -Math.sqrt(45) * axial - 0.71 * lateral - yaw;
+            leftFrontPower = Math.sqrt(45) * axial + 0.71 * lateral - yaw;
+            leftBackPower = -Math.sqrt(45) * axial + 0.71 * lateral - yaw;
+            rightBackPower = Math.sqrt(45) * axial - 0.71 * lateral - yaw;
         }
         rightFrontPower *=2;
         leftFrontPower *=2;
@@ -59,7 +62,7 @@ public class Omni4wheel extends LinearOpMode
         rightDrive_fr.setPower(rightFrontPower);
     }
 
-    //начнём оснавную часть
+    //начнём основную часть
     @Override
     public void runOpMode() {
 

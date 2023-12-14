@@ -17,10 +17,10 @@ public class Omni4WheelAutonomus extends LinearOpMode
         DcMotor leftDrive_ass = hardwareMap.get(DcMotor.class, "left_ass");
         DcMotor rightDrive_fr = hardwareMap.get(DcMotor.class, "right_fr");
         DcMotor rightDrive_ass = hardwareMap.get(DcMotor.class, "right_ass");
-        leftDrive_fr.setDirection(DcMotor.Direction.FORWARD); // куда изначально крутятся моторы, тк моторы могут быть направлены в разные стороны
-        leftDrive_ass.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive_fr.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive_ass.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive_fr.setDirection(DcMotor.Direction.REVERSE); // куда изначально крутятся моторы, тк моторы могут быть направлены в разные стороны
+        leftDrive_ass.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive_fr.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive_ass.setDirection(DcMotor.Direction.REVERSE);
         rightDrive_fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftDrive_fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive_ass.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -31,10 +31,10 @@ public class Omni4WheelAutonomus extends LinearOpMode
         rightDrive_ass.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftDrive_ass.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        int rightFrTarget = rightDrive_fr.getCurrentPosition() + (int)(720 * DRIVE_COUNTS_PER_MM);// здесь мы объявляем сколько нам надо проехать (мм) в данном случае 180
-        int leftFrTarget = leftDrive_fr.getCurrentPosition() - (int)(720 * DRIVE_COUNTS_PER_MM);
-        int rightAssTarget = rightDrive_ass.getCurrentPosition() + (int)(720 * DRIVE_COUNTS_PER_MM);
-        int leftAssTarget = leftDrive_ass.getCurrentPosition() - (int)(180 * DRIVE_COUNTS_PER_MM);
+        int rightFrTarget = rightDrive_fr.getCurrentPosition() - (int)(1800 * DRIVE_COUNTS_PER_MM);// здесь мы объявляем сколько нам надо проехать (мм) в данном случае 180
+        int leftFrTarget = leftDrive_fr.getCurrentPosition() + (int)(1800 * DRIVE_COUNTS_PER_MM);
+        int rightAssTarget = rightDrive_ass.getCurrentPosition() + (int)(1800 * DRIVE_COUNTS_PER_MM);
+        int leftAssTarget = leftDrive_ass.getCurrentPosition() - (int)(1800 * DRIVE_COUNTS_PER_MM);
 
         rightDrive_fr.setTargetPosition(rightFrTarget);
         leftDrive_fr.setTargetPosition(leftFrTarget);
@@ -42,9 +42,9 @@ public class Omni4WheelAutonomus extends LinearOpMode
         leftDrive_ass.setTargetPosition(leftAssTarget);
 
         rightDrive_fr.setPower(1);
-        leftDrive_fr.setPower(-1);
+        leftDrive_fr.setPower(1);
         rightDrive_ass.setPower(1);
-        leftDrive_ass.setPower(-1);
+        leftDrive_ass.setPower(1);
 
         rightDrive_fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftDrive_fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -66,4 +66,3 @@ public class Omni4WheelAutonomus extends LinearOpMode
         leftDrive_ass.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
-
