@@ -3,7 +3,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name="blue good position left", group="Test")
+@Autonomous(name="blue good position right", group="Test")
 public class  bluegood2 extends LinearOpMode
 {
     static final double HD_COUNTS_PER_REV = 24;// скопированные из инета переменные (я верю что именно столько считывает енкодер за оборот)
