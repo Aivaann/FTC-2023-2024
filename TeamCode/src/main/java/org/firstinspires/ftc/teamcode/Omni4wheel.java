@@ -83,7 +83,6 @@ public class Omni4wheel extends LinearOpMode
         while (opModeIsActive()) {
             motors_setPower(); // вызываем функцию, передаём значения с джойстика
             telemetry.addData("Enc_left", leftDrive_fr.getCurrentPosition()); //вывод телеметрии
-            //telemetry.addData("Status", "Run Time: " + runtime.toString()); // вывод телеметрии
             telemetry.update(); // обновление
         }
     }

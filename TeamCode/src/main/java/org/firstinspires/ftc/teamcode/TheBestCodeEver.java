@@ -24,7 +24,7 @@ public class TheBestCodeEver extends LinearOpMode {
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
         ));
-        telemetry.addLine("initializing");
+        telemetry.addLine("initializing"); // its test
         telemetry.addLine("");
         telemetry.addLine("| |__");
         telemetry.addLine("| '_ \\| | | | \\ \\ / / _` | '_ \\");
