@@ -11,10 +11,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 public class TheBestCodeEver extends LinearOpMode {
     @Override
     public void runOpMode(){
-        DcMotorSimple leftFront = hardwareMap.get(DcMotorSimple.class, "leftFront");
-        DcMotorSimple leftBack = hardwareMap.get(DcMotorSimple.class, "leftBack");
-        DcMotorSimple rightFront = hardwareMap.get(DcMotorSimple.class, "rightFront");
-        DcMotorSimple rightBack = hardwareMap.get(DcMotorSimple.class, "rightBack");
+        DcMotorSimple leftFront = hardwareMap.get(DcMotorSimple.class, "left_fr");
+        DcMotorSimple leftBack = hardwareMap.get(DcMotorSimple.class, "left_ass");
+        DcMotorSimple rightFront = hardwareMap.get(DcMotorSimple.class, "right_fr");
+        DcMotorSimple rightBack = hardwareMap.get(DcMotorSimple.class, "right_ass");
+        DcMotorSimple lift_1 = hardwareMap.get(DcMotorSimple.class, "lift_1");
+        DcMotorSimple lift_2 = hardwareMap.get(DcMotorSimple.class, "lift_2");
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -24,7 +26,7 @@ public class TheBestCodeEver extends LinearOpMode {
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
         ));
-        telemetry.addLine("initializing"); // its test
+        telemetry.addLine("initializing");
         telemetry.update();
 
         imu.initialize(parameters);
@@ -36,10 +38,11 @@ public class TheBestCodeEver extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()){
-            double ly = -gamepad1.right_stick_y;
-            double lx = gamepad1.right_stick_x;
-            double rx = gamepad1.left_stick_x;
+            double ly = -gamepad1.right_stick_y,
+            lx = gamepad1.right_stick_x,
+            rx = gamepad1.left_stick_x;
 
+            System.out.println(gamepad1.left_trigger);
             double max = Math.max(Math.abs(rx) + Math.abs(ly) + Math.abs(lx), 1);
 
             double heading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);

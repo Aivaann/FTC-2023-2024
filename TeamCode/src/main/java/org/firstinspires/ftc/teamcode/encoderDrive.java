@@ -10,6 +10,8 @@ public class encoderDrive extends LinearOpMode {
     private DcMotor         leftDrive1  = null;
     private DcMotor         rightDrive  = null;
     private DcMotor         rightDrive1 = null;
+    private DcMotor         wDrive1 = null;
+    private DcMotor         wDrive2 = null;
     private ElapsedTime     runtime = new ElapsedTime();
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.

@@ -5,18 +5,21 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp
+@TeleOp(name = "Pumbiwe")
 public class Omni4wheel extends LinearOpMode
 {
-
-    // задаём моторы, название мотров в коде, изначально они не объявлены
-    private DcMotor rightDrive_ass, rightDrive_fr, leftDrive_ass, leftDrive_fr  = null;
-    // а так как нам очень скучно, то мы заодно и указываем на то что они не объявлены
+    private DcMotor
+            rightDrive_ass,
+            rightDrive_fr,
+            leftDrive_ass,
+            leftDrive_fr,
+            lift_1,
+            lift_2;
     boolean k = true;
     double y = 0;
 
     public void motors_setPower()
-    { // публичная функция не возвращаяет значения - void
+    {
         double axial   = -gamepad1.right_stick_y;
         double lateral =  gamepad1.right_stick_x;
         double yaw     =  -gamepad1.left_stick_x;
@@ -64,6 +67,9 @@ public class Omni4wheel extends LinearOpMode
         leftDrive_fr.setPower(leftFrontPower);
         rightDrive_ass.setPower(rightBackPower);
         rightDrive_fr.setPower(rightFrontPower);
+        lift_1.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+        lift_2.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+
         y=yaw;
     }
 
@@ -78,10 +84,15 @@ public class Omni4wheel extends LinearOpMode
         leftDrive_ass = hardwareMap.get(DcMotor.class, "right_fr");
         rightDrive_fr = hardwareMap.get(DcMotor.class, "right_ass");
         rightDrive_ass = hardwareMap.get(DcMotor.class, "left_ass");
+        lift_1 = hardwareMap.get(DcMotor.class, "lift_1");
+        lift_2 = hardwareMap.get(DcMotor.class, "lift_2");
+
         leftDrive_fr.setDirection(DcMotor.Direction.REVERSE); // куда изначально крутятся моторы, тк моторы могут быть направлены в разные стороны
         leftDrive_ass.setDirection(DcMotor.Direction.REVERSE);
         rightDrive_fr.setDirection(DcMotor.Direction.REVERSE);
         rightDrive_ass.setDirection(DcMotor.Direction.REVERSE);
+        lift_1.setDirection(DcMotor.Direction.FORWARD);
+        lift_2.setDirection(DcMotor.Direction.REVERSE);
         waitForStart(); // ожидаем запуск программы
         //runtime.reset();
 
