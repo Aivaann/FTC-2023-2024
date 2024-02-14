@@ -25,12 +25,6 @@ public class TheBestCodeEver extends LinearOpMode {
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
         ));
         telemetry.addLine("initializing"); // its test
-        telemetry.addLine("");
-        telemetry.addLine("| |__");
-        telemetry.addLine("| '_ \\| | | | \\ \\ / / _` | '_ \\");
-        telemetry.addLine("| |_) | |_| |  \\ V / (_| | | | |");
-        telemetry.addLine("|_.__/ \\__, |   \\_/ \\__,_|_| |_|");
-        telemetry.addLine("       |___/                    ");
         telemetry.update();
 
         imu.initialize(parameters);
