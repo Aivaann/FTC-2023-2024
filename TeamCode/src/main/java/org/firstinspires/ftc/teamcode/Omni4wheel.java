@@ -27,6 +27,7 @@ public class Omni4wheel extends LinearOpMode
         leftBackPower,
         rightBackPower;
 
+        yaw*=2;
         if ((lateral <= 0.1 && lateral > 0) ||  (lateral >= -0.1 && lateral < 0)) {
             rightFrontPower  = -Math.sin(45) * axial - yaw;
             leftFrontPower = Math.sin(45) * axial - yaw;
@@ -61,12 +62,6 @@ public class Omni4wheel extends LinearOpMode
             rightBackPower = rightBackPower/Math.abs(rightBackPower)*Math.min(Math.abs(rightBackPower)/4, 0.5);
         }
 
-        if (yaw >= 0.1 ||  yaw <= -0.1){
-            rightFrontPower = 2*yaw;
-            leftFrontPower = 2*yaw;
-            leftBackPower =2*yaw;
-            rightBackPower =2*yaw;
-        }
 
         if (Math.abs(y)>Math.abs(yaw)){
             rightFrontPower *= 0;
