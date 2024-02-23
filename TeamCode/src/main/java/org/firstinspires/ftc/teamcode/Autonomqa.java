@@ -51,7 +51,7 @@ public class Autonomqa extends LinearOpMode {
 
         while (get_current_rotation() < target) {
             if (target - get_current_rotation() <= 180) {
-                set_motors_power(((target - get_current_rotation()) / delta));
+                set_motors_power(((target - get_current_rotation()) / delta) + 0.11);
             }
             else {
                 set_motors_power(1);
@@ -59,7 +59,7 @@ public class Autonomqa extends LinearOpMode {
         }
         while (get_current_rotation() > target) {
             if (target - get_current_rotation() <= 180) {
-                set_motors_power(((target - get_current_rotation()) / delta));
+                set_motors_power(((target - get_current_rotation()) / delta) - 0.11);
             }
             else {
                 set_motors_power(-1);
