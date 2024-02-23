@@ -16,41 +16,28 @@ public class Omni4wheel extends LinearOpMode
             lift_2;
     boolean k = true;
     double y = 0;
+    double         rightFrontPower,
+            leftFrontPower,
+            leftBackPower,
+            rightBackPower;
 
     public void joystickMovement()
     {
-        double axial = gamepad1.right_stick_x,
+        double axial = -gamepad1.right_stick_x,
         lateral = -gamepad1.right_stick_y,
-        yaw =  -gamepad1.left_stick_x / 4,
-        rightFrontPower,
-        leftFrontPower,
-        leftBackPower,
-        rightBackPower;
+        yaw =  -gamepad1.left_stick_x / 2;
 
-        yaw*=2;
-        if ((lateral <= 0.1 && lateral > 0) ||  (lateral >= -0.1 && lateral < 0)) {
-            rightFrontPower  = -Math.sin(45) * axial - yaw;
-            leftFrontPower = Math.sin(45) * axial - yaw;
-            leftBackPower   = -Math.sin(45) * axial - yaw;
-            rightBackPower  = Math.sin(45) * axial - yaw;
-        }
-        else if ((axial <= 0.1 && axial > 0) || (axial >= -0.1 && axial < 0)){
-            rightFrontPower  = - Math.sin(45) * lateral - yaw;
-            leftFrontPower = Math.sin(45) * lateral - yaw;
-            leftBackPower   = Math.sin(45) * lateral - yaw;
-            rightBackPower  = - Math.sin(45) * lateral - yaw;
-        }
-        else {
-            rightFrontPower  = -Math.sin(45) * axial - Math.sin(45) * lateral - yaw;
-            leftFrontPower = Math.sin(45) * axial + Math.sin(45) * lateral - yaw;
-            leftBackPower   = -Math.sin(45) * axial + Math.sin(45) * lateral - yaw;
-            rightBackPower  = Math.sin(45) * axial - Math.sin(45) * lateral - yaw;
-        }
+        yaw*=Math.max((Math.abs(lateral)+Math.abs(axial))*4,1.3);
 
-        rightFrontPower *=2;
-        leftFrontPower *=2;
-        leftBackPower *=2;
-        rightBackPower *=2;
+        rightFrontPower  = (-axial - lateral - yaw);
+        leftFrontPower = (axial + lateral - yaw);
+        leftBackPower   = (-axial + lateral - yaw);
+        rightBackPower  = (axial - lateral - yaw);
+
+        rightFrontPower *=1.4;
+        leftFrontPower *=1.4;
+        leftBackPower *=1.4;
+        rightBackPower *=1.4;
 
         if (gamepad1.square){
             k=!k;
@@ -74,11 +61,28 @@ public class Omni4wheel extends LinearOpMode
         rightDrive_ass.setPower(rightBackPower);
         rightDrive_fr.setPower(rightFrontPower);
 
-        lift_1.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
-        lift_2.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+        update_lifts_values();
+
+        //lift_1.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+        //lift_2.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
 
         y=yaw;
     }
+
+    void update_lifts_values() {
+        float value = lift_1.getCurrentPosition() + gamepad1.right_trigger - gamepad1.left_trigger;
+        int min_value = 50;
+        int max_value = (int) (6700 - lift_1.getVelocity() / 5.125);
+        if (gamepad1.ps || (value >= min_value && value <= max_value) ||
+                (lift_1.getCurrentPosition() <= min_value && (gamepad1.right_trigger - gamepad1.left_trigger > 0)) ||
+                (lift_1.getCurrentPosition() >= max_value && (gamepad1.right_trigger - gamepad1.left_trigger < 0)))
+        {
+            lift_1.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+            lift_2.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+        }
+
+    }
+
 
     @Override
     public void runOpMode() {
@@ -110,7 +114,7 @@ public class Omni4wheel extends LinearOpMode
 
         int lift_1_position = lift_1.getCurrentPosition(),
                 lift_2_position = lift_2.getCurrentPosition();
-        printer("Lift 1 position: " + lift_1_position + ". Lift 2 position: " + lift_2_position);
+        printer("Lift 1 position: " + lift_1_position + ". Lift velocity: " + lift_1.getVelocity());
 
         // lift_1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // lift_2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

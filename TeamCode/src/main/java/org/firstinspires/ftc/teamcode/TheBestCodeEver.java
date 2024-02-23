@@ -56,8 +56,6 @@ public class TheBestCodeEver extends LinearOpMode {
             leftBack.setPower(((adjustedLy - adjustedLx + rx) / max) * power);
             rightFront.setPower(((adjustedLy - adjustedLx - rx) / max) * power);
             rightBack.setPower(((adjustedLy + adjustedLx - rx) / max) * power);
-
-
         }
     }
 
