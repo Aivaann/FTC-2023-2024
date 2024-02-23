@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -15,15 +19,40 @@ public class Test extends LinearOpMode {
     private DcMotor LeftDrive_fr, LeftDrive_ass;
     private DcMotor lift_right, lift_left;
 
-    boolean slow_mode = true;
-    boolean t = true;
-    boolean bump_right = true;
-    boolean bump_left = true;
-    private Servo serv_hang_himself;
-    private Servo servo_up;
-    private Servo serv_right, serv_left;
+
+    boolean slow_mode = true,
+            t = true,
+            bump_right = true,
+            bump_left = true;
+
+    private Servo serv_hang_himself,
+            servo_up,
+            serv_right,
+            serv_left;
+
 
     private final LinkedList<String> console = new LinkedList<>();
+    IMU imu;
+
+    @Override
+    public void runOpMode() {
+        declare_variables();
+
+        for (DcMotor motor : new DcMotor[] { LeftDrive_fr, LeftDrive_ass, lift_left }) {
+            motor.setDirection(DcMotor.Direction.REVERSE);
+        }
+
+        waitForStart();
+
+        while (opModeIsActive()) {
+            print(
+                    "Imu value: " + get_current_rotation()
+            );
+            DcMotorPower();
+            update_lifts_values();
+            use_servos();
+        }
+    }
 
     public void DcMotorPower() {
         double main_x = -gamepad1.right_stick_x,
@@ -56,7 +85,6 @@ public class Test extends LinearOpMode {
     }
 
     void use_servos(){
-        //print("Left: " + serv_left.getPosition() + ". Right: " + serv_right.getPosition() + ". Up: " + servo_up.getPosition());
         if (gamepad1.cross){
             if (t){
                 serv_hang_himself.setPosition(0.9);
@@ -65,36 +93,61 @@ public class Test extends LinearOpMode {
             }
             t=!t;
         }
+
         if (gamepad1.right_bumper){
             if (bump_right){
-                serv_right.setPosition(0.5);
+                serv_right.setPosition(0.5);  // Closed
             }else{
-                serv_right.setPosition(0.2);
+                serv_right.setPosition(0.2); // Opened
             }
             bump_right =!bump_right;
         }
+
         if (gamepad1.left_bumper){
             if (bump_left){
-                serv_left.setPosition(0.4);
+                serv_left.setPosition(0.4); // Opened
             }else{
-                serv_left.setPosition(0.1);
+                serv_left.setPosition(0.1); // Closed
             }
             bump_left =!bump_left;
         }
+
+        if (gamepad1.circle) {
+            if (serv_left.getPosition() >= 0.2 && serv_right.getPosition() <= 0.3) {
+                serv_left.setPosition(0.1);
+                serv_right.setPosition(0.5);
+            }
+            else {
+                serv_left.setPosition(0.4);
+                serv_right.setPosition(0.2);
+            }
+        }
+
         if (gamepad1.dpad_up){
             servo_up.setPosition(0.19);
+
         }
+
         if (gamepad1.dpad_down){
             servo_up.setPosition(0.44);
         }
 
-        if (gamepad1.square || gamepad1.cross || gamepad1.right_bumper || gamepad1.left_bumper || gamepad1.dpad_up || gamepad1.dpad_down) {
+        if (gamepad1.circle || gamepad1.square || gamepad1.cross || gamepad1.right_bumper || gamepad1.left_bumper || gamepad1.dpad_up || gamepad1.dpad_down) {
             sleep(200);
         }
     }
 
-    @Override
-    public void runOpMode() {
+
+    void print(String output) {
+        console.add(output);
+        if (console.size() > 10) { console.remove(0); }
+        for (String line : console) {
+            telemetry.addLine(line);
+        }
+        telemetry.update();
+    }
+
+    void declare_variables() {
         RightDrive_fr = hardwareMap.get(DcMotor.class, "RightDrive_fr");
         LeftDrive_fr = hardwareMap.get(DcMotor.class, "LeftDrive_fr");
         RightDrive_ass = hardwareMap.get(DcMotor.class, "RightDrive_ass");
@@ -105,26 +158,18 @@ public class Test extends LinearOpMode {
         servo_up=hardwareMap.get(Servo.class, "servo_up");
         serv_right = hardwareMap.get(Servo.class, "serv_right");
         serv_left = hardwareMap.get(Servo.class, "serv_left");
+        imu = hardwareMap.get(IMU.class, "imu");
 
-        for (DcMotor motor : new DcMotor[] { LeftDrive_fr, LeftDrive_ass, lift_left }) {
-            motor.setDirection(DcMotor.Direction.REVERSE);
-        }
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+        ));
+        imu.initialize(parameters);
 
-        waitForStart();
-
-        while (opModeIsActive()) {
-            DcMotorPower();
-            update_lifts_values();
-            use_servos();
-        }
+        servo_up.setPosition(0.44);
     }
 
-    void print(String output) {
-        console.add(output);
-        if (console.size() > 10) { console.remove(0); }
-        for (String line : console) {
-            telemetry.addLine(line);
-        }
-        telemetry.update();
+    double get_current_rotation() {
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
 }

@@ -1,11 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
 import java.util.LinkedList;
+import java.util.Timer;
 
 @Autonomous
 public class Autonomqa extends LinearOpMode {
@@ -16,21 +21,12 @@ public class Autonomqa extends LinearOpMode {
     private Servo serv_hang_himself;
     private Servo servo_up;
     private Servo serv_right, serv_left;
+    IMU imu;
 
     private final LinkedList<String> console = new LinkedList<>();
     @Override
     public void runOpMode() {
-        RightDrive_fr = hardwareMap.get(DcMotor.class, "RightDrive_fr");
-        LeftDrive_fr = hardwareMap.get(DcMotor.class, "LeftDrive_fr");
-        RightDrive_ass = hardwareMap.get(DcMotor.class, "RightDrive_ass");
-        LeftDrive_ass= hardwareMap.get(DcMotor.class, "LeftDrive_ass");
-        lift_right = hardwareMap.get(DcMotor.class, "lift_right");
-        lift_left = hardwareMap.get(DcMotor.class, "lift_left");
-        serv_hang_himself=hardwareMap.get(Servo.class, "serv_hang_himself");
-        servo_up=hardwareMap.get(Servo.class, "servo_up");
-        serv_right = hardwareMap.get(Servo.class, "serv_right");
-        serv_left = hardwareMap.get(Servo.class, "serv_left");
-
+        declare_variables();
 
         for (DcMotor motor : new DcMotor[] { LeftDrive_fr, LeftDrive_ass, lift_left }) {
             //motor.setDirection(DcMotor.Direction.REVERSE);
@@ -38,32 +34,38 @@ public class Autonomqa extends LinearOpMode {
 
         waitForStart();
         if (opModeIsActive()) {
-            print(String.format("Right FR: %s. Right B: %s. Left FR: %s, Left B: %s",
-                    RightDrive_fr.getCurrentPosition(),
-                    RightDrive_ass.getCurrentPosition(),
-                    LeftDrive_fr.getCurrentPosition(),
-                    LeftDrive_ass.getCurrentPosition()));
-            rotate(9999);
+            rotate(90);
         }
     }
 
 
     void rotate(int degrees) {
-        int current_pos = RightDrive_fr.getCurrentPosition(), target_pos = RightDrive_fr.getCurrentPosition() + degrees * 10;
-        int spread = target_pos - current_pos;
-        while (RightDrive_fr.getCurrentPosition() < target_pos) {
-            print(String.format("Position: %s. Percent: %s", RightDrive_fr.getCurrentPosition(), (target_pos - RightDrive_fr.getCurrentPosition()) / spread));
-            for (DcMotor motor : new DcMotor[] { RightDrive_fr, RightDrive_ass, LeftDrive_ass, LeftDrive_fr}) {
-                motor.setPower(
-                        (target_pos - RightDrive_fr.getCurrentPosition()) / spread
-                );
+        double target = get_current_rotation() + degrees;
+        if (target > 360) {
+            target -= 360;
+            while (get_current_rotation() > 10) {
+                set_motors_power((360 - get_current_rotation() + target) / 150);
             }
         }
+        double delta = 150;
 
-
-        for (DcMotor motor : new DcMotor[] { RightDrive_fr, RightDrive_ass, LeftDrive_ass, LeftDrive_fr}) {
-            motor.setPower(0);
+        while (get_current_rotation() < target) {
+            if (target - get_current_rotation() <= 180) {
+                set_motors_power(((target - get_current_rotation()) / delta));
+            }
+            else {
+                set_motors_power(1);
+            }
         }
+        while (get_current_rotation() > target) {
+            if (target - get_current_rotation() <= 180) {
+                set_motors_power(((target - get_current_rotation()) / delta));
+            }
+            else {
+                set_motors_power(-1);
+            }
+        }
+        set_motors_power(0);
 
     }
 
@@ -75,5 +77,36 @@ public class Autonomqa extends LinearOpMode {
             telemetry.addLine(line);
         }
         telemetry.update();
+    } void print(int output) {print(String.valueOf(output));} void print(double output) {print(String.valueOf(output));}
+
+
+    void declare_variables() {
+        RightDrive_fr = hardwareMap.get(DcMotor.class, "RightDrive_fr");
+        LeftDrive_fr = hardwareMap.get(DcMotor.class, "LeftDrive_fr");
+        RightDrive_ass = hardwareMap.get(DcMotor.class, "RightDrive_ass");
+        LeftDrive_ass= hardwareMap.get(DcMotor.class, "LeftDrive_ass");
+        lift_right = hardwareMap.get(DcMotor.class, "lift_right");
+        lift_left = hardwareMap.get(DcMotor.class, "lift_left");
+        serv_hang_himself=hardwareMap.get(Servo.class, "serv_hang_himself");
+        servo_up=hardwareMap.get(Servo.class, "servo_up");
+        serv_right = hardwareMap.get(Servo.class, "serv_right");
+        serv_left = hardwareMap.get(Servo.class, "serv_left");
+        imu = hardwareMap.get(IMU.class, "imu");
+
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+        ));
+        imu.initialize(parameters);
+    }
+
+    double get_current_rotation() {
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + 180;
+    }
+
+    void set_motors_power(double power) {
+        for (DcMotor motor : new DcMotor[]{RightDrive_fr, RightDrive_ass, LeftDrive_ass, LeftDrive_fr}) {
+            motor.setPower(power);
+        }
     }
 }
