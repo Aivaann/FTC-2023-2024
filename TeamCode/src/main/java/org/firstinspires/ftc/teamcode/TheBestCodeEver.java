@@ -3,28 +3,26 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@TeleOp(name = "TBCE SBVVV")
 public class TheBestCodeEver extends LinearOpMode {
     @Override
     public void runOpMode(){
-        DcMotorSimple leftFront = hardwareMap.get(DcMotorSimple.class, "left_fr");
-        DcMotorSimple leftBack = hardwareMap.get(DcMotorSimple.class, "left_ass");
-        DcMotorSimple rightFront = hardwareMap.get(DcMotorSimple.class, "right_fr");
-        DcMotorSimple rightBack = hardwareMap.get(DcMotorSimple.class, "right_ass");
-        DcMotorSimple lift_1 = hardwareMap.get(DcMotorSimple.class, "lift_1");
-        DcMotorSimple lift_2 = hardwareMap.get(DcMotorSimple.class, "lift_2");
+        DcMotorSimple leftFront = hardwareMap.get(DcMotorSimple.class, "LeftDrive_fr");
+        DcMotorSimple leftBack = hardwareMap.get(DcMotorSimple.class, "LeftDrive_ass");
+        DcMotorSimple rightFront = hardwareMap.get(DcMotorSimple.class, "RightDrive_fr");
+        DcMotorSimple rightBack = hardwareMap.get(DcMotorSimple.class, "RightDrive_ass");
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
         ));
         telemetry.addLine("initializing");
         telemetry.update();
