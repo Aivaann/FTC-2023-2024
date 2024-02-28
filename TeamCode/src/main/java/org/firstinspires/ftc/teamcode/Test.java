@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
@@ -62,11 +63,11 @@ public class Test extends LinearOpMode {
 
     public void DcMotorPower() {
         double main_x = -gamepad1.right_stick_x,
-                main_y = gamepad1.right_stick_y,
+                main_y = -gamepad1.right_stick_y,
                 not_main_x =  -gamepad1.left_stick_x / 2;
         not_main_x*=Math.max((Math.abs(main_y)+Math.abs(main_x))*4,1.3);
-        double RightDrive_fr_power = main_y + main_x + not_main_x;
-        double RightDrive_ass_power = main_y - main_x + not_main_x;
+        double RightDrive_fr_power = main_y - main_x + not_main_x;
+        double RightDrive_ass_power = main_y + main_x + not_main_x;
         double LeftDrive_fr_power = main_y - main_x - not_main_x;
         double LeftDrive_ass_power = main_y + main_x - not_main_x;
         if (buttons_pressed.get("square")){
@@ -136,6 +137,7 @@ public class Test extends LinearOpMode {
             DcMotorPower();
             update_lifts_values();
             use_servos();
+            write_autonom();
         }
     }
     void print(String output) {
@@ -177,18 +179,18 @@ public class Test extends LinearOpMode {
         servo_up.setPosition(0.44);
 
 
-        for (DcMotor motor : new DcMotor[]{RightDrive_fr, RightDrive_ass, LeftDrive_ass, LeftDrive_fr}) {
+        for (DcMotor motor : new DcMotor[]{RightDrive_fr, RightDrive_ass, LeftDrive_ass, LeftDrive_fr, lift_right, lift_left}) {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 
     }
     void write_autonom() {
         sleep(100);
-        System.out.println(
-                gamepad1.left_stick_x + " " + gamepad1.right_stick_x + " " +
-                        gamepad1.right_stick_y + " " + " " +
-                        gamepad1.left_bumper + " " + gamepad1.right_bumper
-        );
+
+        for (Object obj : new Object[] { gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_bumper, gamepad1.right_bumper }) {
+            System.out.print(String.valueOf(obj) + " ");
+        }
+        System.out.println();
     }
     void check_buttons_down() {
         for (String button : buttons_down.keySet()) {

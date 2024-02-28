@@ -39,8 +39,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(name = "cam_actual")
-public class dima extends LinearOpMode {
+@Autonomous
+public class Camera extends LinearOpMode {
     private DcMotor RightDrive_fr, RightDrive_ass;
     private DcMotor LeftDrive_fr, LeftDrive_ass;
     private DcMotor lift_right, lift_left;
@@ -50,17 +50,11 @@ public class dima extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     Servo ser;
     DigitalChannel test;
-    //INTRODUCE VARIABLES HERE
     boolean tagFound = false;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
     static final double FEET_PER_METER = 3.28084;
-
-    // Lens intrinsics
-    // UNITS ARE PIXELS
-    // NOTE: this calibration is for the C920 webcam at 800x448.
-    // You will need to do your own calibration for other configurations!
     double fx = 578.272;
     double fy = 578.272;
     double cx = 402.145;
@@ -104,7 +98,7 @@ public class dima extends LinearOpMode {
 
         //for camera
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "camera"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         camera.setPipeline(aprilTagDetectionPipeline);
@@ -122,8 +116,6 @@ public class dima extends LinearOpMode {
 
         telemetry.setMsTransmissionInterval(50);
 
-
-        // after init, starts serching for conus
         while (!isStarted() && !isStopRequested()) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
@@ -147,22 +139,6 @@ public class dima extends LinearOpMode {
             telemetry.update();
             sleep(20);
         }
-
-        // actual start
-
-
-
-/*
-    boolean red = true;
-        if (red){
-            right_left(1000, 1, -1);
-        }
-        else {
-            right_left(1000, -1, 1);
-        }
-        t
- */
-
 
         if (tagFound)
         {
@@ -195,19 +171,5 @@ public class dima extends LinearOpMode {
     void tagToTelemetry(@NonNull AprilTagDetection detection) {
         telemetry.addLine(String.format("Detected tag ID=%d", detection.id));
     }
-
-
-
-
-    /*
-    double distance_sorona(double current_position) {
-        return ((150 * 537* 240) / 42.4);
-    }
-    double distance_fb(double current_position) {
-        return ((150 * 537 * 240) / 42.4);
-    }
-    */
-
-
 }
 
