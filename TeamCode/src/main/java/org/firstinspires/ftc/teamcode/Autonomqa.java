@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Timer;
 
-@Autonomous(name="Route recording")
 public class Autonomqa extends LinearOpMode {
 
     private DcMotor RightDrive_fr, RightDrive_ass;
@@ -114,18 +113,18 @@ public class Autonomqa extends LinearOpMode {
         serv_right = hardwareMap.get(Servo.class, "serv_right");
         serv_left = hardwareMap.get(Servo.class, "serv_left");
 
-        imu = hardwareMap.get(IMU.class, "imu");
+        //imu = hardwareMap.get(IMU.class, "imu");
 
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
-        ));
-        imu.initialize(parameters);
+        //IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+        //        RevHubOrientationOnRobot.LogoFacingDirection.UP,
+        //        RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+        //));
+        //imu.initialize(parameters);
 
 
-        for (DcMotor motor : new DcMotor[]{RightDrive_fr, RightDrive_ass, LeftDrive_ass, LeftDrive_fr, lift_right, lift_left}) {
-            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
+        //for (DcMotor motor : new DcMotor[]{RightDrive_fr, RightDrive_ass, LeftDrive_ass, LeftDrive_fr, lift_right, lift_left}) {
+        //    motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //}
     }
     double get_current_rotation() {
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + 180;
@@ -148,55 +147,349 @@ public class Autonomqa extends LinearOpMode {
     String[] get_instructions() {
         // lx, rx, ry, left_bumper, right_bumper
         // String data = "";
-        String data = "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "-0.015748033 0.0 0.0 false false\n" +
-                "-0.5806231 0.0 0.0 false false\n" +
-                "-0.70044506 0.0 0.0 false false\n" +
-                "-0.70044506 0.0 0.0 false false\n" +
-                "-0.70044506 0.0 0.0 false false\n" +
-                "-0.70044506 0.0 0.0 false false\n" +
-                "-0.70044506 0.0 0.0 false false\n" +
-                "-0.70044506 0.0 0.0 false false\n" +
-                "-0.70044506 0.0 0.0 false false\n" +
-                "-0.70044506 0.0 0.0 false false\n" +
-                "-0.70044506 0.0 0.0 false false\n" +
-                "-0.7175625 0.0 0.0 false false\n" +
-                "-0.7517973 0.0 0.0 false false\n" +
-                "-0.7517973 0.0 0.0 false false\n" +
-                "-0.7517973 0.0 0.0 false false\n" +
-                "-0.7517973 0.0 0.0 false false\n" +
-                "-0.760356 0.0 0.0 false false\n" +
-                "-0.760356 0.0 0.0 false false\n" +
-                "-0.760356 0.0 0.0 false false\n" +
-                "-0.760356 0.0 0.0 false false\n" +
-                "-0.760356 0.0 0.0 false false\n" +
-                "-0.760356 0.0 0.0 false false\n" +
-                "-0.760356 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n" +
-                "0.0 0.0 0.0 false false\n";
+        String data = "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.007189324 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.02430675 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.032865457 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.1270113 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.195481 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3238617 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3324204 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3324204 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3324204 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3324204 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3324204 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3238617 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.22971587 0.0 0.0 false false/n"+
+                "0.0 0.0 0.70044506 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "-0.4008901 0.0 0.0 0.0 0.0 false false/n"+
+                "-0.5207121 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.195481 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.35809657 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.28106812 0.0 0.0 false false/n"+
+                "0.0 0.0 0.64909273 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+"0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.007189324 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.02430675 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.032865457 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.1270113 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.195481 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3238617 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3324204 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3324204 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3324204 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3324204 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3324204 0.0 0.0 false false/n"+
+                "0.0 0.0 -0.3238617 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.22971587 0.0 0.0 false false/n"+
+                "0.0 0.0 0.70044506 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "-0.4008901 0.0 0.0 0.0 0.0 false false/n"+
+                "-0.5207121 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.195481 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.35809657 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.28106812 0.0 0.0 false false/n"+
+                "0.0 0.0 0.64909273 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n"+
+                "0.0 0.0 0.0 0.0 0.0 false false/n";
 
-        return data.split("\n");
+        return data.split("/n");
     }
     public void DcMotorPower(double main_x, double main_y, double not_main_x) {
         main_x = -main_x;
@@ -214,6 +507,7 @@ public class Autonomqa extends LinearOpMode {
         LeftDrive_fr.setPower(LeftDrive_fr_power);
         RightDrive_ass.setPower(RightDrive_ass_power);
         RightDrive_fr.setPower(RightDrive_fr_power);
+        sleep(100);
     }
     void use_servos(){
         if (buttons_down.get("cross")){

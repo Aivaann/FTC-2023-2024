@@ -65,6 +65,8 @@ public class Test extends LinearOpMode {
         double main_x = -gamepad1.right_stick_x,
                 main_y = -gamepad1.right_stick_y,
                 not_main_x =  -gamepad1.left_stick_x / 2;
+        telemetry.addData("power", main_y);
+        telemetry.update();
         not_main_x*=Math.max((Math.abs(main_y)+Math.abs(main_x))*4,1.3);
         double RightDrive_fr_power = main_y - main_x + not_main_x;
         double RightDrive_ass_power = main_y + main_x + not_main_x;
@@ -187,7 +189,7 @@ public class Test extends LinearOpMode {
     void write_autonom() {
         sleep(100);
 
-        for (Object obj : new Object[] { gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_bumper, gamepad1.right_bumper }) {
+        for (Object obj : new Object[] { gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_bumper, gamepad1.right_bumper, gamepad1.right_trigger, gamepad1.left_trigger, gamepad1.dpad_up, gamepad1.dpad_down }) {
             System.out.print(String.valueOf(obj) + " ");
         }
         System.out.println();
