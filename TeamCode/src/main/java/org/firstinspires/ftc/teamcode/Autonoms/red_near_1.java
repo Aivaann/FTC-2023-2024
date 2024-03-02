@@ -189,7 +189,7 @@ public class red_near_1 extends LinearOpMode {
         serv_hang_himself.setPosition(1);
         serv_right.setPosition(0.485);
         serv_left.setPosition(0.1);
-        servo_up.setPosition(0.44);
+        servo_up.setPosition(0.19);
 
 
         for (DcMotor motor : new DcMotor[]{RightDrive_fr, RightDrive_ass, LeftDrive_ass, LeftDrive_fr, lift_right, lift_left}) {

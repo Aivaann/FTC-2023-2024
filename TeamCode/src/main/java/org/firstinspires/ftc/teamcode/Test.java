@@ -172,7 +172,7 @@ public class Test extends LinearOpMode {
             System.out.print(obj + " ");
         }
         System.out.println();
-        sleep(40);
+        sleep(30);
     }
     void check_buttons_down() {
         for (String button : buttons_down.keySet()) {

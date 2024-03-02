@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Trash;
 
+import static java.lang.Math.random;
+
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -10,7 +14,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Trash.AprilTagDetectionPipeline;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -19,13 +22,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 public class Camera extends LinearOpMode {
-    private DcMotor RightDrive_fr, RightDrive_ass;
-    private DcMotor LeftDrive_fr, LeftDrive_ass;
-    private DcMotor lift_right, lift_left;
-    private Servo serv_hang_himself;
-    private Servo servo_up;
-    private Servo serv_right, serv_left;
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
     Servo ser;
     DigitalChannel test;
     boolean tagFound = false;
@@ -50,19 +47,20 @@ public class Camera extends LinearOpMode {
 
     AprilTagDetection tagOfInterest = null;
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void runOpMode() {
         double ratio = 0.1; // ratio for all speed
-        RightDrive_fr = hardwareMap.get(DcMotor.class, "RightDrive_fr");
-        LeftDrive_fr = hardwareMap.get(DcMotor.class, "LeftDrive_fr");
-        RightDrive_ass = hardwareMap.get(DcMotor.class, "RightDrive_ass");
-        LeftDrive_ass= hardwareMap.get(DcMotor.class, "LeftDrive_ass");
-        lift_right = hardwareMap.get(DcMotor.class, "lift_right");
-        lift_left = hardwareMap.get(DcMotor.class, "lift_left");
-        serv_hang_himself=hardwareMap.get(Servo.class, "serv_hang_himself");
-        servo_up=hardwareMap.get(Servo.class, "servo_up");
-        serv_right = hardwareMap.get(Servo.class, "serv_right");
-        serv_left = hardwareMap.get(Servo.class, "serv_left");
+        DcMotor rightDrive_fr = hardwareMap.get(DcMotor.class, "RightDrive_fr");
+        DcMotor leftDrive_fr = hardwareMap.get(DcMotor.class, "LeftDrive_fr");
+        DcMotor rightDrive_ass = hardwareMap.get(DcMotor.class, "RightDrive_ass");
+        DcMotor leftDrive_ass = hardwareMap.get(DcMotor.class, "LeftDrive_ass");
+        DcMotor lift_right = hardwareMap.get(DcMotor.class, "lift_right");
+        DcMotor lift_left = hardwareMap.get(DcMotor.class, "lift_left");
+        Servo serv_hang_himself = hardwareMap.get(Servo.class, "serv_hang_himself");
+        Servo servo_up = hardwareMap.get(Servo.class, "servo_up");
+        Servo serv_right = hardwareMap.get(Servo.class, "serv_right");
+        Servo serv_left = hardwareMap.get(Servo.class, "serv_left");
 
         // for angles
         BNO055IMU imu;
@@ -97,7 +95,7 @@ public class Camera extends LinearOpMode {
         while (!isStarted() && !isStopRequested()) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
-            if (currentDetections.size() != 0) {
+            if (!currentDetections.isEmpty()) {
                 boolean tagFound = false;
 
                 for (AprilTagDetection tag : currentDetections) {
@@ -107,6 +105,7 @@ public class Camera extends LinearOpMode {
                         break;
                     }
                 }
+
 
                 if (tagFound) {
                     telemetry.addLine("Last tag:");
@@ -131,12 +130,12 @@ public class Camera extends LinearOpMode {
         }
         else {
 
-            int task = (int) (Math.random() % 3);
-            telemetry.addLine(String.format("random rask", task));
+            int task = (int) (random() % 3);
+            telemetry.addLine(String.format("random rask %s", task));
             telemetry.update();
             if (task == 0) {
             } else if (task == 1) {
-                telemetry.addLine(String.format("random task, kdnjsvkjdfvibdvhbjdfbhj.v cnkldvnkmv cx", task));
+                telemetry.addLine(String.format("random task, kdnjsvkjdfvibdvhbjdfbhj.v cnkldvnkmv cx %s", task));
                 telemetry.update();
             } else if (task == 2) {
 
@@ -146,6 +145,7 @@ public class Camera extends LinearOpMode {
 
     }
 
+    @SuppressLint("DefaultLocale")
     void tagToTelemetry(@NonNull AprilTagDetection detection) {
         telemetry.addLine(String.format("Detected tag ID=%d", detection.id));
     }

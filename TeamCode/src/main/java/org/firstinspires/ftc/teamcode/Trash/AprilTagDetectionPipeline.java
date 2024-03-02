@@ -19,7 +19,7 @@ import java.util.ArrayList;
 class AprilTagDetectionPipeline extends OpenCvPipeline
 {
     private long nativeApriltagPtr;
-    private Mat grey = new Mat();
+    private final Mat grey = new Mat();
     private ArrayList<AprilTagDetection> detections = new ArrayList<>();
 
     private ArrayList<AprilTagDetection> detectionsUpdate = new ArrayList<>();
@@ -63,7 +63,7 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
     }
 
     @Override
-    public void finalize()
+    protected void finalize()
     {
         // Might be null if createApriltagDetector() threw an exception
         if(nativeApriltagPtr != 0)
@@ -106,8 +106,8 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
         for(AprilTagDetection detection : detections)
         {
             Pose pose = poseFromTrapezoid(detection.corners, cameraMatrix, tagsizeX, tagsizeY);
-            drawAxisMarker(input, tagsizeY/2.0, 6, pose.rvec, pose.tvec, cameraMatrix);
-            draw3dCubeMarker(input, tagsizeX, tagsizeX, tagsizeY, 5, pose.rvec, pose.tvec, cameraMatrix);
+            drawAxisMarker(input, tagsizeY/2.0, pose.rvec, pose.tvec, cameraMatrix);
+            draw3dCubeMarker(input, tagsizeX, tagsizeX, tagsizeY, pose.rvec, pose.tvec, cameraMatrix);
         }
 
         return input;
@@ -166,13 +166,13 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
     /**
      * Draw a 3D axis marker on a detection. (Similar to what Vuforia does)
      *
-     * @param buf the RGB buffer on which to draw the marker
-     * @param length the length of each of the marker 'poles'
-     * @param rvec the rotation vector of the detection
-     * @param tvec the translation vector of the detection
+     * @param buf          the RGB buffer on which to draw the marker
+     * @param length       the length of each of the marker 'poles'
+     * @param rvec         the rotation vector of the detection
+     * @param tvec         the translation vector of the detection
      * @param cameraMatrix the camera matrix used when finding the detection
      */
-    void drawAxisMarker(Mat buf, double length, int thickness, Mat rvec, Mat tvec, Mat cameraMatrix)
+    void drawAxisMarker(Mat buf, double length, Mat rvec, Mat tvec, Mat cameraMatrix)
     {
         // The points in 3D space we wish to project onto the 2D image plane.
         // The origin of the coordinate space is assumed to be in the center of the detection.
@@ -189,14 +189,14 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
         Point[] projectedPoints = matProjectedPoints.toArray();
 
         // Draw the marker!
-        Imgproc.line(buf, projectedPoints[0], projectedPoints[1], red, thickness);
-        Imgproc.line(buf, projectedPoints[0], projectedPoints[2], green, thickness);
-        Imgproc.line(buf, projectedPoints[0], projectedPoints[3], blue, thickness);
+        Imgproc.line(buf, projectedPoints[0], projectedPoints[1], red, 6);
+        Imgproc.line(buf, projectedPoints[0], projectedPoints[2], green, 6);
+        Imgproc.line(buf, projectedPoints[0], projectedPoints[3], blue, 6);
 
-        Imgproc.circle(buf, projectedPoints[0], thickness, white, -1);
+        Imgproc.circle(buf, projectedPoints[0], 6, white, -1);
     }
 
-    void draw3dCubeMarker(Mat buf, double length, double tagWidth, double tagHeight, int thickness, Mat rvec, Mat tvec, Mat cameraMatrix)
+    void draw3dCubeMarker(Mat buf, double length, double tagWidth, double tagHeight, Mat rvec, Mat tvec, Mat cameraMatrix)
     {
         //axis = np.float32([[0,0,0], [0,3,0], [3,3,0], [3,0,0],
         //       [0,0,-3],[0,3,-3],[3,3,-3],[3,0,-3] ])
@@ -221,7 +221,7 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
         // Pillars
         for(int i = 0; i < 4; i++)
         {
-            Imgproc.line(buf, projectedPoints[i], projectedPoints[i+4], blue, thickness);
+            Imgproc.line(buf, projectedPoints[i], projectedPoints[i+4], blue, 5);
         }
 
         // Base lines
@@ -231,10 +231,10 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
         //Imgproc.line(buf, projectedPoints[3], projectedPoints[0], blue, thickness);
 
         // Top lines
-        Imgproc.line(buf, projectedPoints[4], projectedPoints[5], green, thickness);
-        Imgproc.line(buf, projectedPoints[5], projectedPoints[6], green, thickness);
-        Imgproc.line(buf, projectedPoints[6], projectedPoints[7], green, thickness);
-        Imgproc.line(buf, projectedPoints[4], projectedPoints[7], green, thickness);
+        Imgproc.line(buf, projectedPoints[4], projectedPoints[5], green, 5);
+        Imgproc.line(buf, projectedPoints[5], projectedPoints[6], green, 5);
+        Imgproc.line(buf, projectedPoints[6], projectedPoints[7], green, 5);
+        Imgproc.line(buf, projectedPoints[4], projectedPoints[7], green, 5);
     }
 
     /**
@@ -271,7 +271,7 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
      * A simple container to hold both rotation and translation
      * vectors, which together form a 6DOF pose.
      */
-    class Pose
+    static class Pose
     {
         Mat rvec;
         Mat tvec;
