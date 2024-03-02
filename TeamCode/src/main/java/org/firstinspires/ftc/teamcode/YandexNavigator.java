@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 @Autonomous(name="Yandex navigator")
-public class test1 extends LinearOpMode {
+public class YandexNavigator extends LinearOpMode {
     private DcMotor RightDrive_fr, RightDrive_ass;
     private DcMotor LeftDrive_fr, LeftDrive_ass;
     private DcMotor lift_right, lift_left;

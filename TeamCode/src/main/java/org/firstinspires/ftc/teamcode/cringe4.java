@@ -8,7 +8,6 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
-@Autonomous (name = "cringe4")
 public class cringe4 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
