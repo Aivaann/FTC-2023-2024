@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Autonoms;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-@Autonomous(name="red near 1")
+@Autonomous(name="Red near 1")
 public class red_near_1 extends LinearOpMode {
     private DcMotor RightDrive_fr, RightDrive_ass;
     private DcMotor LeftDrive_fr, LeftDrive_ass;

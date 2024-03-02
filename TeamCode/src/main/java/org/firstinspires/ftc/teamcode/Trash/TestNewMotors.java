@@ -1,11 +1,10 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Trash;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name = "Cringe2", group = "Concept")
-
+@TeleOp(group="Concept")
 public class TestNewMotors extends LinearOpMode {
     private DcMotor motor;
 
