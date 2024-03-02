@@ -19,8 +19,6 @@ public class YandexNavigator extends LinearOpMode {
 
     boolean slow_mode = true;
     boolean t = true;
-    boolean bump_right = true;
-    boolean bump_left = true;
     private Servo serv_hang_himself;
     private Servo servo_up;
     private Servo serv_right, serv_left;
@@ -139,7 +137,7 @@ public class YandexNavigator extends LinearOpMode {
                     update_lifts_values((double) user_data.get("right_trigger"), (double) user_data.get("left_trigger"));
                     use_servos();
                 }
-                catch (Exception e) {}
+                catch (Exception ignored) {}
                 sleep(40);
             }
         }
@@ -198,7 +196,7 @@ public class YandexNavigator extends LinearOpMode {
         sleep(100);
 
         for (Object obj : new Object[] { gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_bumper, gamepad1.right_bumper }) {
-            System.out.print(String.valueOf(obj) + " ");
+            System.out.print(obj + " ");
         }
         System.out.println();
     }
