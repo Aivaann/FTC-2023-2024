@@ -118,12 +118,6 @@ public class Test extends LinearOpMode {
         }
 
         waitForStart();
-        BatteryChecker.BatteryWatcher watcher = new BatteryChecker.BatteryWatcher() {
-            @Override
-            public void updateBatteryStatus(BatteryChecker.BatteryStatus status) {
-                System.out.println("Battery status: " + status);
-            }
-        };
         while (opModeIsActive()) {
             check_buttons_down();
             DcMotorPower();
