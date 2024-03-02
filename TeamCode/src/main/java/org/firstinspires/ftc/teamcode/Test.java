@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.app.ApplicationErrorReport;
+import android.os.BatteryManager;
+
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.BatteryChecker;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -114,7 +118,12 @@ public class Test extends LinearOpMode {
         }
 
         waitForStart();
-
+        BatteryChecker.BatteryWatcher watcher = new BatteryChecker.BatteryWatcher() {
+            @Override
+            public void updateBatteryStatus(BatteryChecker.BatteryStatus status) {
+                System.out.println("Battery status: " + status);
+            }
+        };
         while (opModeIsActive()) {
             check_buttons_down();
             DcMotorPower();
