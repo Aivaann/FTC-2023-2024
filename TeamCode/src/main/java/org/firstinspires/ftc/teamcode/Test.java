@@ -101,20 +101,18 @@ public class Test extends LinearOpMode {
             t=!t;
         }
         if (buttons_down.get("right_bumper")){
-            if (bump_right){
+            if (serv_right.getPosition() <= 0.35){
                 serv_right.setPosition(0.485); // Closed
             }else{
                 serv_right.setPosition(0.25); // Opened
             }
-            bump_right =!bump_right;
         }
         if (buttons_down.get("left_bumper")){
-            if (bump_left){
+            if (serv_left.getPosition() <= 0.25){
                 serv_left.setPosition(0.4); // Opened
             }else{
                 serv_left.setPosition(0.1); // Closed
             }
-            bump_left =!bump_left;
         }
         if (buttons_down.get("dpad_up")){
             servo_up.setPosition(0.19);
@@ -187,12 +185,11 @@ public class Test extends LinearOpMode {
 
     }
     void write_autonom() {
-        sleep(100);
-
         for (Object obj : new Object[] { gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_bumper, gamepad1.right_bumper, gamepad1.right_trigger, gamepad1.left_trigger, gamepad1.dpad_up, gamepad1.dpad_down }) {
             System.out.print(String.valueOf(obj) + " ");
         }
         System.out.println();
+        sleep(40);
     }
     void check_buttons_down() {
         for (String button : buttons_down.keySet()) {
