@@ -50,7 +50,7 @@ public class Test extends LinearOpMode {
 
     public void DcMotorPower() {
         double main_x = -gamepad1.right_stick_x,
-                main_y = -gamepad1.right_stick_y,
+                main_y = -gamepad1.left_stick_y,
                 not_main_x =  -gamepad1.left_stick_x / 2;
         telemetry.addData("power", main_y);
         telemetry.update();
@@ -74,8 +74,13 @@ public class Test extends LinearOpMode {
         RightDrive_fr.setPower(RightDrive_fr_power);
     }
     void update_lifts_values() {
-        lift_right.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
-        lift_left.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
+        if (serv_hang_himself.getPosition()==0.9){
+            lift_right.setPower(0);
+            lift_left.setPower(0);
+        }else{
+            lift_right.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
+            lift_left.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
+        }
 
     }
     void use_servos(){
