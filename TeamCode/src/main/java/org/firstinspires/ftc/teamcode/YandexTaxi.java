@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 @TeleOp
-public class Test extends LinearOpMode {
+public class YandexTaxi extends LinearOpMode {
     private DcMotor RightDrive_fr, RightDrive_ass;
     private DcMotor LeftDrive_fr, LeftDrive_ass;
     private DcMotor lift_right, lift_left;
@@ -50,7 +50,7 @@ public class Test extends LinearOpMode {
 
     public void DcMotorPower() {
         double main_x = -gamepad1.right_stick_x,
-                main_y = -gamepad1.right_stick_y,
+                main_y = -gamepad1.right_stick_y - gamepad1.left_stick_y,
                 not_main_x =  -gamepad1.left_stick_x / 2;
         telemetry.addData("power", main_y);
         telemetry.update();
