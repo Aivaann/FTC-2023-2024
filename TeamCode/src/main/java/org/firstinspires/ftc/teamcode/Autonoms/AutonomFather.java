@@ -128,7 +128,7 @@ public class AutonomFather extends LinearOpMode {
         for (DcMotor motor : new DcMotor[] { LeftDrive_fr, LeftDrive_ass, lift_left }) {
             motor.setDirection(DcMotor.Direction.REVERSE);
         }
-        servo_up.setPosition(0.19);
+        servo_up.setPosition(0.15);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         WebcamName webcamName = null;
         webcamName = hardwareMap.get(WebcamName.class, "camera"); // put your camera's name here
