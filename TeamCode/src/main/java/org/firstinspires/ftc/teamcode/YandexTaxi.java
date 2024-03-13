@@ -28,6 +28,7 @@ public class YandexTaxi extends LinearOpMode {
     private Servo serv_hang_himself;
     private Servo servo_up;
     private Servo serv_right, serv_left;
+    double dif_r_fr = 0, dif_r_ass = 0, dif_l_fr = 0, dif_l_ass = 0;
 
     private final LinkedList<String> console = new LinkedList<>();
     IMU imu;
@@ -55,10 +56,10 @@ public class YandexTaxi extends LinearOpMode {
         telemetry.addData("power", main_y);
         telemetry.update();
         not_main_x*=Math.max((Math.abs(main_y)+Math.abs(main_x))*4,1.3);
-        double RightDrive_fr_power = main_y - main_x + not_main_x;
-        double RightDrive_ass_power = main_y + main_x + not_main_x;
-        double LeftDrive_fr_power = main_y - main_x - not_main_x;
-        double LeftDrive_ass_power = main_y + main_x - not_main_x;
+        double RightDrive_fr_power = (main_y - main_x + not_main_x)*0.8 + dif_r_fr/70*0.2;
+        double RightDrive_ass_power = (main_y + main_x + not_main_x)*0.8 + dif_r_ass/70*0.2;
+        double LeftDrive_fr_power = (main_y - main_x - not_main_x)*0.8 + dif_l_fr/70*0.2;
+        double LeftDrive_ass_power = (main_y + main_x - not_main_x)*0.8 + dif_l_ass/70*0.2;
         if (buttons_pressed.get("square")){
             slow_mode =! slow_mode;
         }
@@ -180,7 +181,19 @@ public class YandexTaxi extends LinearOpMode {
             System.out.print(obj + " ");
         }
         System.out.println();
+        double RightDrive_fr_en_old = RightDrive_fr.getCurrentPosition(),
+                LeftDrive_fr_en_old = LeftDrive_fr.getCurrentPosition(),
+                RightDrive_ass_an_old = RightDrive_ass.getCurrentPosition(),
+                LeftDrive_ass_an_old = LeftDrive_ass.getCurrentPosition();
         sleep(30);
+        double RightDrive_fr_en = RightDrive_fr.getCurrentPosition(),
+                LeftDrive_fr_en = LeftDrive_fr.getCurrentPosition(),
+                RightDrive_ass_an = RightDrive_ass.getCurrentPosition(),
+                LeftDrive_ass_an = LeftDrive_ass.getCurrentPosition();
+        dif_r_fr = Math.abs(RightDrive_fr_en_old - RightDrive_fr_en);
+        dif_r_ass = Math.abs(RightDrive_ass_an_old - RightDrive_ass_an);
+        dif_l_fr = Math.abs(LeftDrive_fr_en_old - LeftDrive_fr_en);
+        dif_l_ass = Math.abs(LeftDrive_ass_an_old - LeftDrive_ass_an);
     }
     void check_buttons_down() {
         for (String button : buttons_down.keySet()) {

@@ -176,6 +176,10 @@ public class YandexNavigator extends LinearOpMode {
         serv_right = hardwareMap.get(Servo.class, "serv_right");
         serv_left = hardwareMap.get(Servo.class, "serv_left");
         imu = hardwareMap.get(IMU.class, "imu");
+        RightDrive_fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LeftDrive_fr.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RightDrive_ass.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LeftDrive_ass.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         // WebcamName camera = hardwareMap.get(WebcamName.class, "camera");
         telemetry.setMsTransmissionInterval(50);
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(

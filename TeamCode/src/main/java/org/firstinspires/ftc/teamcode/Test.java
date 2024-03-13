@@ -49,16 +49,17 @@ public class Test extends LinearOpMode {
     }};
 
     public void DcMotorPower() {
-        double main_x = -gamepad1.right_stick_x,
+        //cringe
+        double main_x = gamepad1.right_stick_x,
                 main_y = -gamepad1.right_stick_y,
                 not_main_x =  -gamepad1.left_stick_x / 2;
         telemetry.addData("power", main_y);
         telemetry.update();
         not_main_x*=Math.max((Math.abs(main_y)+Math.abs(main_x))*4,1.3);
-        double RightDrive_fr_power = main_y - main_x + not_main_x;
-        double RightDrive_ass_power = main_y + main_x + not_main_x;
-        double LeftDrive_fr_power = main_y - main_x - not_main_x;
-        double LeftDrive_ass_power = main_y + main_x - not_main_x;
+        double RightDrive_fr_power = main_y - main_x - not_main_x;
+        double RightDrive_ass_power = main_y - main_x + not_main_x;
+        double LeftDrive_fr_power = main_y + main_x + not_main_x;
+        double LeftDrive_ass_power = main_y - main_x + not_main_x;
         if (buttons_pressed.get("square")){
             slow_mode =! slow_mode;
         }
