@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorSimple
 
 @TeleOp(name="Google Taxi")
 class GoogleTaxi : LinearOpMode() {
@@ -26,10 +27,19 @@ class GoogleTaxi : LinearOpMode() {
             motor?.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         }
 
+        for (motor in arrayOf(RightDrive_fr, RightDrive_ass)) {
+            motor?.direction = DcMotorSimple.Direction.REVERSE
+        }
+
+
         waitForStart()
 
         while (opModeIsActive()) {
             motorMovement()
+            if (gamepad1.triangle) { LeftDrive_fr?.power = 0.5 }
+            if (gamepad1.square) { RightDrive_fr?.power = 0.5 }
+            if (gamepad1.cross) { LeftDrive_ass?.power = 0.5 }
+            if (gamepad1.circle) { RightDrive_ass?.power = 0.5 }
         }
     }
 
@@ -37,6 +47,9 @@ class GoogleTaxi : LinearOpMode() {
         val x = gamepad1.right_stick_x as Float
         val y = gamepad1.right_stick_y as Float
 
-        lift_left?.power = (x + y).toDouble()
+        RightDrive_fr?.power = (y).toDouble()
+        RightDrive_ass?.power = (y).toDouble()
+        LeftDrive_ass?.power = (y).toDouble()
+        LeftDrive_fr?.power = (y).toDouble()
     }
 }
