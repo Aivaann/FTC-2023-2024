@@ -136,6 +136,7 @@ public class AutonomFather extends LinearOpMode {
         pipeline = new CVCamera();
         pipeline.CenterStageCVDetection(telemetry);
         pipeline.setBlueColor();
+        pipeline.setRedColor();
         webcam.setPipeline(pipeline);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {

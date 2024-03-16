@@ -1,24 +1,24 @@
-package org.firstinspires.ftc.teamcode;
-
-import android.app.ApplicationErrorReport;
-import android.os.BatteryManager;
+package org.firstinspires.ftc.teamcode.Autonoms;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.BatteryChecker;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-@TeleOp
-public class YandexTaxi extends LinearOpMode {
+@Autonomous(name="Select Blue")
+public class SelectBlue extends LinearOpMode {
     private DcMotor RightDrive_fr, RightDrive_ass;
     private DcMotor LeftDrive_fr, LeftDrive_ass;
     private DcMotor lift_right, lift_left;
@@ -28,7 +28,13 @@ public class YandexTaxi extends LinearOpMode {
     private Servo serv_hang_himself;
     private Servo servo_up;
     private Servo serv_right, serv_left;
-    double dif_r_fr = 0, dif_r_ass = 0, dif_l_fr = 0, dif_l_ass = 0;
+    HashMap<String, Object> user_data = new HashMap<String, Object>(){{
+        put("left_stick_x", 0);
+        put("right_stick_x", 0);
+        put("right_stick_y", 0);
+        put("right_bumper", false);
+        put("left_bumper", false);
+    }};
 
     private final LinkedList<String> console = new LinkedList<>();
     IMU imu;
@@ -49,17 +55,23 @@ public class YandexTaxi extends LinearOpMode {
         put("dpad_down", false);
     }};
 
-    public void DcMotorPower() {
-        double main_x = -gamepad1.right_stick_x,
-                main_y = -gamepad1.right_stick_y - gamepad1.left_stick_y,
-                not_main_x =  -gamepad1.left_stick_x / 2;
-        telemetry.addData("power", main_y);
-        telemetry.update();
+    CVCamera pipeline;
+    OpenCvWebcam webcam;
+    static final int STREAM_WIDTH = 1280; // modify for your camera
+    static final int STREAM_HEIGHT = 720; // modify for your camera
+    int location = 0;
+
+
+    public void DcMotorPower(double main_x, double main_y, double not_main_x) {
+        main_x = -main_x;
+        main_y = -main_y;
+        not_main_x =  -not_main_x / 2;
         not_main_x*=Math.max((Math.abs(main_y)+Math.abs(main_x))*4,1.3);
-        double RightDrive_fr_power = (-main_y - main_x + not_main_x);
-        double RightDrive_ass_power = (main_y + main_x + not_main_x);
-        double LeftDrive_fr_power = (main_y - main_x - not_main_x);
-        double LeftDrive_ass_power = (-main_y + main_x - not_main_x);
+
+        double RightDrive_fr_power = main_y - main_x + not_main_x;
+        double RightDrive_ass_power = main_y + main_x + not_main_x;
+        double LeftDrive_fr_power = main_y - main_x - not_main_x;
+        double LeftDrive_ass_power = main_y + main_x - not_main_x;
         if (buttons_pressed.get("square")){
             slow_mode =! slow_mode;
         }
@@ -74,15 +86,9 @@ public class YandexTaxi extends LinearOpMode {
         RightDrive_ass.setPower(RightDrive_ass_power);
         RightDrive_fr.setPower(RightDrive_fr_power);
     }
-    void update_lifts_values() {
-        if (serv_hang_himself.getPosition()==0.9){
-            lift_right.setPower(0);
-            lift_left.setPower(0);
-        }else{
-            lift_right.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
-            lift_left.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
-        }
-
+    void update_lifts_values(double right_trigger, double left_trigger) {
+        lift_right.setPower(left_trigger - right_trigger);
+        lift_left.setPower(left_trigger - right_trigger);
     }
     void use_servos(){
         if (buttons_down.get("cross")){
@@ -108,10 +114,10 @@ public class YandexTaxi extends LinearOpMode {
             }
         }
         if (buttons_down.get("dpad_up")){
-            servo_up.setPosition(0.27);
+            servo_up.setPosition(0.19);
         }
         if (buttons_down.get("dpad_down")){
-            servo_up.setPosition(0.66);
+            servo_up.setPosition(0.44);
         }
     }
 
@@ -122,16 +128,35 @@ public class YandexTaxi extends LinearOpMode {
         for (DcMotor motor : new DcMotor[] { LeftDrive_fr, LeftDrive_ass, lift_left }) {
             motor.setDirection(DcMotor.Direction.REVERSE);
         }
+        servo_up.setPosition(0.15);
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        WebcamName webcamName = null;
+        webcamName = hardwareMap.get(WebcamName.class, "camera"); // put your camera's name here
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+        pipeline = new CVCamera();
+        pipeline.CenterStageCVDetection(telemetry);
+        pipeline.setBlueColor();
+        webcam.setPipeline(pipeline);
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                webcam.startStreaming(STREAM_WIDTH, STREAM_HEIGHT, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                telemetry.addData("Camera Failed","");
+                telemetry.update();
+            }
+        });
 
         waitForStart();
-        while (opModeIsActive()) {
-            check_buttons_down();
-            DcMotorPower();
-            update_lifts_values();
-            use_servos();
-            //write_autonom();
+        if (opModeIsActive()) {
         }
     }
+
     void print(String output) {
         console.add(output);
         if (console.size() > 10) {
@@ -157,7 +182,7 @@ public class YandexTaxi extends LinearOpMode {
         serv_right = hardwareMap.get(Servo.class, "serv_right");
         serv_left = hardwareMap.get(Servo.class, "serv_left");
         imu = hardwareMap.get(IMU.class, "imu");
-        WebcamName camera = hardwareMap.get(WebcamName.class, "camera");
+        // WebcamName camera = hardwareMap.get(WebcamName.class, "camera");
         telemetry.setMsTransmissionInterval(50);
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
@@ -176,22 +201,8 @@ public class YandexTaxi extends LinearOpMode {
         }
 
     }
-    void write_autonom() {
-        for (Object obj : new Object[] { gamepad1.left_stick_x, gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_bumper, gamepad1.right_bumper, gamepad1.right_trigger, gamepad1.left_trigger, gamepad1.dpad_up, gamepad1.dpad_down }) {
-            System.out.print(obj + " ");
-        }
-        System.out.println();
-        double RightDrive_fr_en_old = RightDrive_fr.getCurrentPosition(),
-                LeftDrive_fr_en_old = LeftDrive_fr.getCurrentPosition(),
-                RightDrive_ass_an_old = RightDrive_ass.getCurrentPosition(),
-                LeftDrive_ass_an_old = LeftDrive_ass.getCurrentPosition();
-        sleep(30);
-        double RightDrive_fr_en = RightDrive_fr.getCurrentPosition(),
-                LeftDrive_fr_en = LeftDrive_fr.getCurrentPosition(),
-                RightDrive_ass_an = RightDrive_ass.getCurrentPosition(),
-                LeftDrive_ass_an = LeftDrive_ass.getCurrentPosition();
-    }
-    void check_buttons_down() {
+
+    void check_buttons_down(boolean dpad_up, boolean dpad_down, boolean right_bumper, boolean left_bumper) {
         for (String button : buttons_down.keySet()) {
             boolean btn_pressed = false;
             switch (button) {
@@ -202,16 +213,16 @@ public class YandexTaxi extends LinearOpMode {
                     btn_pressed = gamepad1.square;
                     break;
                 case "right_bumper":
-                    btn_pressed = gamepad1.right_bumper;
+                    btn_pressed = right_bumper;
                     break;
                 case "left_bumper":
-                    btn_pressed = gamepad1.left_bumper;
+                    btn_pressed = left_bumper;
                     break;
                 case "dpad_up":
-                    btn_pressed = gamepad1.dpad_up;
+                    btn_pressed = dpad_up;
                     break;
                 case "dpad_down":
-                    btn_pressed = gamepad1.dpad_down;
+                    btn_pressed = dpad_down;
                     break;
             }
             if (btn_pressed) {

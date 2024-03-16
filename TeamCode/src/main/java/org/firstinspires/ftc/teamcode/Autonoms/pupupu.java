@@ -33,7 +33,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
@@ -62,8 +61,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Robot: Auto Drive By Encoder", group="Robot")
-public class cringe_agan extends LinearOpMode {
+@Autonomous(name="pupupu", group="Robot")
+public class pupupu extends LinearOpMode {
 
     /* Declare OpMode members. */
     private DcMotor         leftDrive   = null;
@@ -81,7 +80,7 @@ public class cringe_agan extends LinearOpMode {
     static final double     WHEEL_DIAMETER_INCHES   = 2.5 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.2;
+    static final double     DRIVE_SPEED             = 0.1;
     static final double     TURN_SPEED              = 0.5;
 
     @Override
@@ -92,27 +91,16 @@ public class cringe_agan extends LinearOpMode {
         leftDrive1 = hardwareMap.get(DcMotor.class, "LeftDrive_ass");
         rightDrive = hardwareMap.get(DcMotor.class, "RightDrive_fr");
         rightDrive1 = hardwareMap.get(DcMotor.class, "RightDrive_ass");
-
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftDrive1.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive1.setDirection(DcMotor.Direction.FORWARD);
         for (DcMotor motor : new DcMotor[]{leftDrive, rightDrive, leftDrive1, rightDrive1}) {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
-
-//        leftDrive.setPower(0.3);
-//        leftDrive1.setPower(0.3);
-//        rightDrive.setPower(0.3);
-//        rightDrive1.setPower(0.3);
-//        sleep(1000);
-//        leftDrive.setPower(0);
-//        leftDrive1.setPower(0);
-//        rightDrive.setPower(0);
-//        rightDrive1.setPower(0);
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
+        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive1.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive1.setDirection(DcMotor.Direction.FORWARD);
 
         leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -124,30 +112,6 @@ public class cringe_agan extends LinearOpMode {
         leftDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-//        leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        leftDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        rightDrive1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        leftDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        rightDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//
-//        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        leftDrive1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightDrive1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//
-//        leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        leftDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        rightDrive1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-
-
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Starting at",  "%7d :%7d",
                 leftDrive.getCurrentPosition(),
@@ -158,32 +122,15 @@ public class cringe_agan extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-//        int kkk = 0;
-//        while (kkk < 1) {
-//        while (leftDrive.getCurrentPosition() < 3000) {
-            //leftDrive.setPower(0.3);
-            //leftDrive1.setPower(0.3);
-            //rightDrive.setPower(0.3);
-            //rightDrive1.setPower(0.3);
-
-            telemetry.addData("power 1", leftDrive.getCurrentPosition());
-            telemetry.addData("power 2", leftDrive1.getCurrentPosition());
-            telemetry.addData("power 3", rightDrive.getCurrentPosition());
-            telemetry.addData("power 4", rightDrive1.getCurrentPosition());
-
-            telemetry.update();
-
-//        }
-//        }
-
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(1,   3, -3, 1.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
+        encoderDrive(DRIVE_SPEED,  4,  4, 0.75);  // S1: Forward 47 Inches with 5 Sec timeout
+        //encoderDrive(TURN_SPEED,   3, -3, 1.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
         //encoderDrive(DRIVE_SPEED, -6, -6, 1.0);  // S3: Reverse 24 Inches with 4 Sec timeout
-        ////telemetry.addData("Path", "Complete");
-        ////telemetry.update();
-        ////sleep(1000);  // pause to display final telemetry message.
+        telemetry.addData("Path", "Complete");
+        telemetry.update();
+        sleep(1000);  // pause to display final telemetry message.
     }
     /*
      *  Method to perform a relative move, based on encoder counts.
@@ -200,18 +147,20 @@ public class cringe_agan extends LinearOpMode {
         int newRightTarget;
         int newLeftTarget1;
         int newRightTarget1;
+
         // Ensure that the OpMode is still active
         if (opModeIsActive()) {
-            leftDrive.setPower(speed);
-            rightDrive.setPower(speed);
-            leftDrive1.setPower(speed);
-            rightDrive1.setPower(speed);
 
             // Determine new target position, and pass to motor controller
             newLeftTarget = leftDrive.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             newRightTarget = rightDrive.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
             newLeftTarget1 = leftDrive1.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             newRightTarget1 = rightDrive1.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+
+            leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            leftDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightDrive1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             leftDrive.setTargetPosition(newLeftTarget);
             rightDrive.setTargetPosition(newRightTarget);
@@ -240,13 +189,26 @@ public class cringe_agan extends LinearOpMode {
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
                     (leftDrive.isBusy() && rightDrive.isBusy() && leftDrive1.isBusy() && rightDrive1.isBusy())) {
+                leftDrive.setPower(speed);
+                rightDrive.setPower(speed);
+                leftDrive1.setPower(speed);
+                rightDrive1.setPower(speed);
 
                 // Display it for the driver.
-                telemetry.addData("Running to",  " %7d :%7d", newLeftTarget,  newRightTarget);
-                telemetry.addData("Currently at",  " at %7d :%7d",
-                        leftDrive.getCurrentPosition(), rightDrive.getCurrentPosition(),leftDrive.getCurrentPosition(), rightDrive.getCurrentPosition());
+                //telemetry.addData("Running to",  " %7d :%7d", newLeftTarget,  newRightTarget);
+                //telemetry.addData("Currently at",  " at %7d :%7d",
+                //        leftDrive.getCurrentPosition(), rightDrive.getCurrentPosition(),leftDrive.getCurrentPosition(), rightDrive.getCurrentPosition());
+                telemetry.addData("leftDrive", leftDrive.getPower());
+                telemetry.addData("leftDrive1", leftDrive1.getPower());
+                telemetry.addData("rightDrive", rightDrive.getPower());
+                telemetry.addData("rightDrive1", rightDrive1.getPower());
                 telemetry.update();
             }
+            telemetry.addData("leftDrive", leftDrive.getPower());
+            telemetry.addData("leftDrive1", leftDrive1.getPower());
+            telemetry.addData("rightDrive", rightDrive.getPower());
+            telemetry.addData("rightDrive1", rightDrive1.getPower());
+            telemetry.update();
 
             // Stop all motion;
             leftDrive.setPower(0);
