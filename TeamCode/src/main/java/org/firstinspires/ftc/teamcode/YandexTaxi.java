@@ -55,20 +55,11 @@ public class YandexTaxi extends LinearOpMode {
                 not_main_x =  -gamepad1.left_stick_x / 2;
         telemetry.addData("power", main_y);
         telemetry.update();
-        not_main_x*=Math.max((Math.abs(main_y)+Math.abs(main_x))*4,1.3);
+        //not_main_x*=Math.max((Math.abs(main_y)+Math.abs(main_x))*4,1.3);
         double RightDrive_fr_power = (-main_y - main_x + not_main_x);
         double RightDrive_ass_power = (main_y + main_x + not_main_x);
         double LeftDrive_fr_power = (main_y - main_x - not_main_x);
         double LeftDrive_ass_power = (-main_y + main_x - not_main_x);
-        if (buttons_pressed.get("square")){
-            slow_mode =! slow_mode;
-        }
-        if (!slow_mode){
-            RightDrive_fr_power = RightDrive_fr_power/Math.abs(RightDrive_fr_power)*Math.min(Math.abs(RightDrive_fr_power)/2, 0.5);
-            LeftDrive_fr_power = LeftDrive_fr_power/Math.abs(LeftDrive_fr_power) * Math.min(Math.abs(LeftDrive_fr_power)/2, 0.5);
-            LeftDrive_ass_power = LeftDrive_ass_power/Math.abs(LeftDrive_ass_power)*Math.min(Math.abs(LeftDrive_ass_power)/2, 0.5);
-            RightDrive_ass_power = RightDrive_ass_power/Math.abs(RightDrive_ass_power)*Math.min(Math.abs(RightDrive_ass_power)/2, 0.5);
-        }
         LeftDrive_ass.setPower(LeftDrive_ass_power);
         LeftDrive_fr.setPower(LeftDrive_fr_power);
         RightDrive_ass.setPower(RightDrive_ass_power);
